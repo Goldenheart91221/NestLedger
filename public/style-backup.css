@@ -1,0 +1,268 @@
+﻿* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  color: #172033;
+}
+
+.hide {
+  display: none !important;
+}
+
+/* ================= AUTH ================= */
+
+.auth-box {
+  width: 390px;
+  max-width: 90%;
+  margin: 80px auto;
+  padding: 35px;
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.auth-box h1 {
+  color: #1769e0;
+  margin-bottom: 8px;
+}
+
+.auth-box p {
+  color: #687386;
+  margin: 10px 0 20px;
+}
+
+.auth-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #d8dfeb;
+  border-radius: 9px;
+  outline: none;
+  font-size: 15px;
+}
+
+input:focus,
+select:focus {
+  border-color: #1769e0;
+}
+
+button {
+  border: none;
+  background: #1769e0;
+  color: white;
+  padding: 13px 18px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.google-btn {
+  width: 100%;
+  margin-top: 14px;
+  background: #fff;
+  color: #333;
+  border: 1px solid #d8dfeb;
+}
+
+.link-btn {
+  background: none;
+  color: #1769e0;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* ================= HEADER ================= */
+
+header {
+  background: white;
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e4e9f1;
+}
+
+header h1 {
+  color: #1769e0;
+}
+
+header p {
+  color: #687386;
+  margin-top: 5px;
+}
+
+/* ================= MAIN ================= */
+
+main {
+  width: 88%;
+  max-width: 1200px;
+  margin: 30px auto;
+}
+
+.card {
+  background: white;
+  padding: 24px;
+  margin-bottom: 22px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(20, 40, 80, 0.06);
+}
+
+.card h2 {
+  margin-bottom: 18px;
+  font-size: 21px;
+}
+
+/* ================= STATS ================= */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.stats .card {
+  margin-bottom: 0;
+}
+
+.stats h3 {
+  color: #687386;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.stats p {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1769e0;
+}
+
+/* ================= FORMS ================= */
+
+#budgetForm {
+  display: flex;
+  gap: 12px;
+}
+
+#budgetForm input {
+  flex: 1;
+}
+
+#expenseForm {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr auto;
+  gap: 12px;
+}
+
+/* ================= EXPENSE LIST ================= */
+
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.expense-item:last-child {
+  border-bottom: none;
+}
+
+.expense-info strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.expense-info small {
+  color: #687386;
+}
+
+.expense-amount {
+  font-weight: bold;
+  margin-right: 12px;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+/* ================= INSIGHTS ================= */
+
+#insights {
+  line-height: 1.7;
+  color: #4d596b;
+}
+
+.insight {
+  padding: 10px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+
+/* ================= TOAST ================= */
+
+#toast {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: #172033;
+  color: white;
+  padding: 13px 18px;
+  border-radius: 9px;
+  display: none;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 800px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  #expenseForm {
+    grid-template-columns: 1fr;
+  }
+
+  #budgetForm {
+    flex-direction: column;
+  }
+
+  header {
+    padding: 18px 5%;
+  }
+
+  main {
+    width: 92%;
+  }
+}
+
+@media (max-width: 500px) {
+  .auth-box {
+    margin: 40px auto;
+    padding: 25px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}

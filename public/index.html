@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NestLedger - Smart Finance Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ================= LOGIN ================= -->
+  <div id="loginBox" class="auth-box">
+    <div class="logo">N</div>
+    <h1>NestLedger</h1>
+    <p>Smart Home Budget & Expense Tracker</p>
+
+    <form id="loginForm">
+      <input id="loginEmail" type="email" placeholder="Email" required>
+
+<div class="password-box">
+  <input id="loginPassword" type="password" placeholder="Password" required>
+  <span class="password-toggle" onclick="togglePassword('loginPassword')">👁️</span>
+</div>
+
+      <button type="submit">Login</button>
+<p class="forgot-password">
+  <a href="#" onclick="showForgotPassword(); return false;">Forgot Password?</a>
+</p>
+
+    </form>
+
+    <button onclick="googleDemo()" class="google-btn">
+      Continue with Google
+    </button>
+
+    <p class="switch-text">
+      Don't have an account?
+      <button type="button" class="link-btn" onclick="showSignup()">
+        Create Account
+      </button>
+    </p>
+  </div>
+
+
+  <!-- ================= SIGNUP ================= -->
+  <div id="signupBox" class="auth-box hide">
+    <div class="logo">N</div>
+    <h1>Create Account</h1>
+    <p>Start managing your home finances</p>
+
+    <form id="signupForm">
+      <input id="signupName" type="text" placeholder="Full Name" required>
+      <input id="signupEmail" type="email" placeholder="Email" required>
+      <input id="signupPassword" type="password" placeholder="Password" required>
+
+      <button type="submit">Create Account</button>
+    </form>
+
+    <p class="switch-text">
+      Already have an account?
+      <button type="button" class="link-btn" onclick="showLogin()">
+        Login
+      </button>
+    </p>
+  </div>
+
+
+  <!-- ================= APP ================= -->
+  <div id="app" class="hide">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+      <div class="brand">
+        <div class="brand-logo">N</div>
+        <div>
+          <strong>NestLedger</strong>
+          <small>Smart Finance</small>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-item active" onclick="scrollToSection('overview')">
+          🏠 <span>Overview</span>
+        </button>
+
+        <button class="nav-item" onclick="scrollToSection('expenses')">
+          💳 <span>Expenses</span>
+        </button>
+
+        <button class="nav-item" onclick="scrollToSection('budget')">
+          💰 <span>Budget</span>
+        </button>
+
+        <button class="nav-item" onclick="scrollToSection('assistant')">
+          🤖 <span>Assistant</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button onclick="logout()" class="logout-btn">
+          ↪ Logout
+        </button>
+      </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <div class="dashboard">
+
+      <!-- Topbar -->
+      <header class="topbar">
+
+        <div>
+          
+          <p>Here's your home finance overview.</p>
+        </div>
+
+        <div class="user-area">
+          <div class="avatar">U</div>
+          <div>
+            <strong>My Account</strong>
+            <small>Personal Finance</small>
+          </div>
+        </div>
+
+      </header>
+
+<h2 id="welcomeMessage">Good day! 👋</h2>
+      <main class="dashboard-content">
+
+        <!-- ================= OVERVIEW ================= -->
+        <section id="overview">
+
+          <div class="section-heading">
+            <div>
+              <h2>Financial Overview</h2>
+              <p>Track your monthly home budget</p>
+            </div>
+
+            <span class="month-badge">This Month</span>
+          </div>
+
+
+          <!-- Stats -->
+          <div class="stats-grid">
+
+            <div class="stat-card">
+              <div class="stat-icon blue">💰</div>
+              <div>
+                <span>Monthly Budget</span>
+                <h3 id="budgetAmount">₹0</h3>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon orange">💳</div>
+              <div>
+                <span>Total Spending</span>
+                <h3 id="spendingAmount">₹0</h3>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon green">📈</div>
+              <div>
+                <span>Remaining</span>
+                <h3 id="remainingAmount">₹0</h3>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+<!-- ================= BUDGET PROGRESS ================= -->
+<section class="dashboard-card">
+
+  <div class="card-header">
+    <div>
+      <h2>Budget Progress</h2>
+      <p>Track how much of your monthly budget is used</p>
+    </div>
+    <span class="card-icon">📊</span>
+  </div>
+
+  <div class="progress-info">
+    <span id="budgetProgressText">0% used</span>
+    <strong id="budgetRemainingText">₹0 remaining</strong>
+  </div>
+
+  <div class="progress-bar">
+    <div id="budgetProgressFill" class="progress-fill"></div>
+  </div>
+
+  <div id="budgetAlert" class="budget-alert hide"></div>
+
+</section>
+        <!-- ================= BUDGET ================= -->
+        <section id="budget" class="dashboard-card">
+
+          <div class="card-header">
+            <div>
+              <h2>Monthly Budget</h2>
+              <p>Set your monthly spending limit</p>
+            </div>
+            <span class="card-icon">💰</span>
+          </div>
+
+          <form id="budgetForm" class="budget-form">
+
+            <input
+              id="budgetInput"
+              type="number"
+              placeholder="Enter monthly budget"
+              min="0"
+              required
+            >
+
+            <button type="submit">
+              Save Budget
+            </button>
+
+          </form>
+
+        </section>
+
+
+        <!-- ================= ADD EXPENSE ================= -->
+        <section id="expenses" class="dashboard-card">
+
+          <div class="card-header">
+            <div>
+              <h2>Add New Expense</h2>
+              <p>Record your household spending</p>
+            </div>
+            <span class="card-icon">➕</span>
+          </div>
+
+          <form id="expenseForm" class="expense-form">
+
+            <input
+              id="expenseTitle"
+              type="text"
+              placeholder="Expense name"
+              required
+            >
+
+            <input
+              id="expenseAmount"
+              type="number"
+              placeholder="Amount"
+              min="0"
+              required
+            >
+
+            <select id="expenseCategory" required>
+              <option value="">Select Category</option>
+              <option value="Food">Food</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Transport">Transport</option>
+              <option value="Bills">Bills</option>
+              <option value="Education">Education</option>
+              <option value="Health">Health</option>
+              <option value="Other">Other</option>
+            </select>
+
+            <button type="submit">
+              Add Expense
+            </button>
+
+          </form>
+
+        </section>
+
+
+        <!-- ================= EXPENSE HISTORY ================= -->
+        <section class="dashboard-card">
+
+          <div class="card-header">
+            <div>
+              <h2>Recent Transactions</h2>
+              <p>Your latest household expenses</p>
+            </div>
+            <span class="card-icon">📋</span>
+          </div>
+<div class="expense-filters">
+
+  <input
+    id="expenseSearch"
+    type="text"
+    placeholder="🔎 Search expense..."
+  >
+
+  <select id="expenseFilter">
+    <option value="All">All Categories</option>
+    <option value="Food">Food</option>
+    <option value="Shopping">Shopping</option>
+    <option value="Transport">Transport</option>
+    <option value="Bills">Bills</option>
+    <option value="Education">Education</option>
+    <option value="Health">Health</option>
+    <option value="Other">Other</option>
+  </select>
+
+</div>
+          <div id="expenseList">
+            No expenses yet.
+          </div>
+
+        </section>
+<!-- ================= CASH FLOW ================= -->
+<section class="dashboard-card">
+
+  <div class="card-header">
+    <div>
+      <h2>Spending Overview</h2>
+      <p>Your expense activity</p>
+    </div>
+    <span class="card-icon">📈</span>
+  </div>
+
+  <div class="chart-box">
+    <canvas id="spendingChart"></canvas>
+  </div>
+
+</section>
+<!-- ================= CATEGORY BREAKDOWN ================= -->
+<section class="dashboard-card">
+
+  <div class="card-header">
+    <div>
+      <h2>Expense Category Breakdown</h2>
+      <p>See where your money is being spent</p>
+    </div>
+    <span class="card-icon">📊</span>
+  </div>
+
+  <div id="categoryBreakdown" class="category-breakdown">
+    No expenses to show.
+  </div>
+
+</section>
+
+        <!-- ================= ASSISTANT ================= -->
+        <section id="assistant" class="dashboard-card assistant-card">
+
+          <div class="card-header">
+            <div>
+              <h2>Budget Assistant 🤖</h2>
+              <p>Simple insights about your spending</p>
+            </div>
+          </div>
+
+          <div id="insights">
+            Add your budget and expenses to get insights.
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+
+  <div id="toast"></div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
