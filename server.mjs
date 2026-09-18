@@ -6,7 +6,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -15,6 +16,6 @@ app.get("/api/health", (req, res) => {
   res.json({ ok: true, message: "NestLedger is running!" });
 });
 
-app.listen(PORT, () => {
-  console.log(`NestLedger is running at http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`NestLedger is running on port ${PORT}`);
 });
