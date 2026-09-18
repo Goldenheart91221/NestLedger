@@ -198,6 +198,53 @@
   <div id="budgetAlert" class="budget-alert hide"></div>
 
 </section>
+<!-- ================= SAVINGS GOALS ================= -->
+<section id="savings" class="dashboard-card">
+
+  <div class="card-header">
+    <div>
+      <h2>Savings Goals 🎯</h2>
+      <p>Set and track your savings targets</p>
+    </div>
+    <span class="card-icon">🎯</span>
+  </div>
+
+  <form id="savingsGoalForm" class="budget-form">
+
+    <input
+      id="goalName"
+      type="text"
+      placeholder="Goal name (e.g. New Laptop)"
+      required
+    >
+
+    <input
+      id="goalTarget"
+      type="number"
+      placeholder="Target amount"
+      min="1"
+      required
+    >
+
+    <input
+      id="goalSaved"
+      type="number"
+      placeholder="Already saved"
+      min="0"
+      required
+    >
+
+    <button type="submit">
+      Add Goal
+    </button>
+
+  </form>
+
+  <div id="savingsGoalsList">
+    No savings goals yet.
+  </div>
+
+</section>
         <!-- ================= BUDGET ================= -->
         <section id="budget" class="dashboard-card">
 

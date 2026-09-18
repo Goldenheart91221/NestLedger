@@ -19,7 +19,8 @@ function getData() {
     localStorage.getItem(getUserKey()) ||
     JSON.stringify({
       budget: 45000,
-      expenses: []
+      expenses: [],
+     savingsGoals: []
     })
   );
 }
@@ -246,6 +247,106 @@ function deleteExpense(id) {
   render();
 }
 
+/* ================= SAVINGS GOALS ================= */
+
+function addSavingsGoal(event) {
+  if (event) event.preventDefault();
+
+  const name = $("goalName").value.trim();
+  const target = Number($("goalTarget").value);
+  const saved = Number($("goalSaved").value);
+
+  if (!name || target <= 0 || saved < 0 || saved > target) {
+    toast("Please enter valid goal details");
+    return;
+  }
+
+  const data = getData();
+
+  if (!data.savingsGoals) {
+    data.savingsGoals = [];
+  }
+
+  data.savingsGoals.push({
+    id: Date.now(),
+    name: name,
+    target: target,
+    saved: saved
+  });
+
+  saveData(data);
+
+  $("savingsGoalForm").reset();
+
+  toast("Savings goal added");
+
+  renderSavingsGoals(data.savingsGoals);
+}
+
+
+function deleteSavingsGoal(id) {
+  const data = getData();
+
+  data.savingsGoals = (data.savingsGoals || []).filter(
+    goal => goal.id !== id
+  );
+
+  saveData(data);
+
+  toast("Savings goal deleted");
+
+  renderSavingsGoals(data.savingsGoals);
+}
+
+
+function renderSavingsGoals(goals) {
+  const box = $("savingsGoalsList");
+
+  if (!box) return;
+
+  if (!goals || !goals.length) {
+    box.innerHTML = "No savings goals yet.";
+    return;
+  }
+
+  box.innerHTML = goals.map(goal => {
+
+    const percentage = Math.min(
+      (goal.saved / goal.target) * 100,
+      100
+    );
+
+    return `
+      <div class="savings-goal">
+
+        <div class="category-name">
+          <strong>${escapeHTML(goal.name)}</strong>
+          <span>
+            ${money(goal.saved)} / ${money(goal.target)}
+          </span>
+        </div>
+
+        <div class="category-bar">
+          <div
+            class="category-fill"
+            style="width: ${percentage}%">
+          </div>
+        </div>
+
+        <div class="progress-info">
+          <span>${Math.round(percentage)}% saved</span>
+
+          <button
+            class="delete-btn"
+            onclick="deleteSavingsGoal(${goal.id})">
+            Delete
+          </button>
+        </div>
+
+      </div>
+    `;
+  }).join("");
+}
 /* ================= RENDER ================= */
 
 function render() {
@@ -303,6 +404,7 @@ if (budget > 0) {
 }
   renderExpenses(data.expenses);
 renderCategoryBreakdown(data.expenses);
+renderSavingsGoals(data.savingsGoals || []);
 renderSpendingChart(data.expenses);
   renderInsights(
     budget,
@@ -652,6 +754,7 @@ window.login = login;
 window.googleDemo = googleDemo;
 window.logout = logout;
 window.deleteExpense = deleteExpense;
+window.deleteSavingsGoal = deleteSavingsGoal;
 /* ================= SEARCH & FILTER ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -664,6 +767,7 @@ document.addEventListener("DOMContentLoaded", () => {
     render();
   });
 
+$("savingsGoalForm").addEventListener("submit", addSavingsGoal);
 });
 function togglePassword(id) {
   const input = document.getElementById(id);
