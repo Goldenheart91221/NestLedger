@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -20,7 +20,7 @@
 
 <div class="password-box">
   <input id="loginPassword" type="password" placeholder="Password" required>
-  <span class="password-toggle" onclick="togglePassword('loginPassword')">👁️</span>
+  <span class="password-toggle" onclick="togglePassword('loginPassword')">???</span>
 </div>
 
       <button type="submit">Login</button>
@@ -68,7 +68,6 @@
 
   <!-- ================= APP ================= -->
   <div id="app" class="hide">
-
     <!-- Sidebar -->
     <aside class="sidebar">
 
@@ -81,28 +80,34 @@
       </div>
 
       <nav>
-        <button class="nav-item active" onclick="scrollToSection('overview')">
-          🏠 <span>Overview</span>
+        <button class="nav-item active" 
+             onclick="showDashboard();
+             scrollToSection('overview')">
+          &#x1F3E0; <span>Overview</span>
         </button>
 
-        <button class="nav-item" onclick="scrollToSection('expenses')">
-          💳 <span>Expenses</span>
+        <button class="nav-item" 
+              onclick="showDashboard();
+              scrollToSection('expenses')">
+          &#x1F4B3; <span>Expenses</span>
         </button>
 
-        <button class="nav-item" onclick="scrollToSection('budget')">
-          💰 <span>Budget</span>
+        <button class="nav-item" 
+       onclick="showDashboard();
+       scrollToSection('budget')">
+          &#x1F4B0; <span>Budget</span>
         </button>
 
-        <button class="nav-item" onclick="scrollToSection('assistant')">
-          🤖 <span>Assistant</span>
+        <button class="nav-item"
+        onclick="showDashboard();
+        scrollToSection('assistant')">
+          &#x1F916; <span>Assistant</span>
         </button>
+      <button id="adminNavButton" class="nav-item hide"
+        onclick="showDashboard(); scrollToSection('adminPanel')">
+        &#x1F451; <span>Admin Dashboard</span>
+      </button>
       </nav>
-
-      <div class="sidebar-bottom">
-        <button onclick="logout()" class="logout-btn">
-          ↪ Logout
-        </button>
-      </div>
 
     </aside>
 
@@ -118,19 +123,52 @@
           <p>Here's your home finance overview.</p>
         </div>
 
-        <div class="user-area">
-          <div class="avatar">U</div>
-          <div>
-            <strong>My Account</strong>
-            <small>Personal Finance</small>
-          </div>
-        </div>
+       <div class="user-area" onclick="toggleAccountMenu()">
+  <div class="avatar">U</div>
+
+  <div>
+    <strong>My Account</strong>
+    <small>Personal Finance</small>
+  </div>
+      <div id="accountMenu" class="account-menu hide">
+  <p>?? <strong id="accountName">My Account</strong></p>
+  <p>?? <span id="accountEmail">Email</span></p>
+
+  <button onclick="logout(); event.stopPropagation();">
+    Logout
+  </button>
+</div>
 
       </header>
 
-<h2 id="welcomeMessage">Good day! 👋</h2>
+<h2 id="welcomeMessage">Good day! ??</h2>
       <main class="dashboard-content">
 
+<!-- ================= ADMIN DASHBOARD ================= -->
+<section id="adminPanel" class="dashboard-card hide">
+  <div class="card-header">
+    <div>
+      <h2>Admin Dashboard &#x1F451;</h2>
+      <p>Manage and monitor NestLedger users</p>
+    </div>
+    <span class="card-icon">&#x1F451;</span>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon blue">&#x1F465;</div>
+      <div>
+        <span>Total Users</span>
+        <h3 id="totalUsers">0</h3>
+      </div>
+    </div>
+  </div>
+
+  <div id="usersList">
+    No users found.
+  </div>
+</section>
+    
         <!-- ================= OVERVIEW ================= -->
         <section id="overview">
 
@@ -148,26 +186,26 @@
           <div class="stats-grid">
 
             <div class="stat-card">
-              <div class="stat-icon blue">💰</div>
+              <div class="stat-icon blue">&#x1F465;</div>
               <div>
                 <span>Monthly Budget</span>
-                <h3 id="budgetAmount">₹0</h3>
+                <h3 id="budgetAmount">?0</h3>
               </div>
             </div>
 
             <div class="stat-card">
-              <div class="stat-icon orange">💳</div>
+              <div class="stat-icon orange">&#x1F4B3;</div>
               <div>
                 <span>Total Spending</span>
-                <h3 id="spendingAmount">₹0</h3>
+                <h3 id="spendingAmount">?0</h3>
               </div>
             </div>
 
             <div class="stat-card">
-              <div class="stat-icon green">📈</div>
+              <div class="stat-icon green">&#x1F4B0;</div>
               <div>
                 <span>Remaining</span>
-                <h3 id="remainingAmount">₹0</h3>
+                <h3 id="remainingAmount">?0</h3>
               </div>
             </div>
 
@@ -183,12 +221,12 @@
       <h2>Budget Progress</h2>
       <p>Track how much of your monthly budget is used</p>
     </div>
-    <span class="card-icon">📊</span>
+    <span class="card-icon">&#x1F4CA;</span>
   </div>
 
   <div class="progress-info">
     <span id="budgetProgressText">0% used</span>
-    <strong id="budgetRemainingText">₹0 remaining</strong>
+    <strong id="budgetRemainingText">&#8377;0 remaining</strong>
   </div>
 
   <div class="progress-bar">
@@ -203,10 +241,10 @@
 
   <div class="card-header">
     <div>
-      <h2>Savings Goals 🎯</h2>
+      <h2>Savings Goals &#x1F3AF;</h2>
       <p>Set and track your savings targets</p>
     </div>
-    <span class="card-icon">🎯</span>
+    <span class="card-icon">&#x1F3AF;</span>
   </div>
 
   <form id="savingsGoalForm" class="budget-form">
@@ -253,7 +291,7 @@
               <h2>Monthly Budget</h2>
               <p>Set your monthly spending limit</p>
             </div>
-            <span class="card-icon">💰</span>
+            <span class="card-icon">&#x1F4B0;</span>
           </div>
 
           <form id="budgetForm" class="budget-form">
@@ -283,7 +321,7 @@
               <h2>Add New Expense</h2>
               <p>Record your household spending</p>
             </div>
-            <span class="card-icon">➕</span>
+            <span class="card-icon">&#x2795;</span>
           </div>
 
           <form id="expenseForm" class="expense-form">
@@ -331,14 +369,14 @@
               <h2>Recent Transactions</h2>
               <p>Your latest household expenses</p>
             </div>
-            <span class="card-icon">📋</span>
+            <span class="card-icon">&#x1F4CB;</span>
           </div>
 <div class="expense-filters">
 
   <input
     id="expenseSearch"
     type="text"
-    placeholder="🔎 Search expense..."
+    placeholder="&#x1F50D; Search expense..."
   >
 
   <select id="expenseFilter">
@@ -366,7 +404,7 @@
       <h2>Spending Overview</h2>
       <p>Your expense activity</p>
     </div>
-    <span class="card-icon">📈</span>
+    <span class="card-icon">&#x1F4C8;</span>
   </div>
 
   <div class="chart-box">
@@ -382,7 +420,7 @@
       <h2>Expense Category Breakdown</h2>
       <p>See where your money is being spent</p>
     </div>
-    <span class="card-icon">📊</span>
+    <span class="card-icon">&#x1F4CA;</span>
   </div>
 
   <div id="categoryBreakdown" class="category-breakdown">
@@ -396,7 +434,7 @@
 
           <div class="card-header">
             <div>
-              <h2>Budget Assistant 🤖</h2>
+              <h2>Budget Assistant &#x1F916;</h2>
               <p>Simple insights about your spending</p>
             </div>
           </div>
@@ -417,6 +455,7 @@
   <div id="toast"></div>
 
   <script src="script.js"></script>
-
-</body>
+  </body>
 </html>
+
+

@@ -2,6 +2,7 @@ const $ = (id) => document.getElementById(id);
 
 let currentUser = localStorage.getItem("nestledger_current_user");
 
+const ADMIN_EMAIL = "kajalkumarisingh407@gmail.com";
 function getUsers() {
   return JSON.parse(localStorage.getItem("nestledger_users") || "[]");
 }
@@ -30,7 +31,7 @@ function saveData(data) {
 }
 
 function money(amount) {
-  return "₹" + Number(amount || 0).toLocaleString("en-IN");
+  return "\u20B9" + Number(amount || 0).toLocaleString("en-IN");
 }
 
 function toast(message) {
@@ -120,28 +121,7 @@ function login(event) {
 
 
 function googleDemo() {
-  const email = "demo@nestledger.com";
-
-  const users = getUsers();
-
-  if (!users.some(user => user.email === email)) {
-    users.push({
-      name: "Demo User",
-      email: email,
-      password: "demo123"
-    });
-
-    saveUsers(users);
-  }
-
-  currentUser = email;
-
-  localStorage.setItem(
-    "nestledger_current_user",
-    currentUser
-  );
-
-  enter();
+  toast("Google Sign-In is not connected yet.");
 }
 
 
@@ -152,7 +132,7 @@ const user = users.find(item => item.email === currentUser);
 
 if (user) {
   $("welcomeMessage").textContent =
-    `Good day, ${user.name}! 👋`;
+    `Good day, ${user.name}! \u{1F44B}`;
 }
   $("loginBox").classList.add("hide");
   $("signupBox").classList.add("hide");
@@ -347,6 +327,42 @@ function renderSavingsGoals(goals) {
     `;
   }).join("");
 }
+/* ================= ADMIN DASHBOARD ================= */
+
+function renderAdminDashboard() { const adminNavButton = $("adminNavButton"); if (adminNavButton) adminNavButton.classList.toggle("hide", currentUser !== ADMIN_EMAIL); if (currentUser !== ADMIN_EMAIL) {
+  const panel = $("adminPanel");
+  if (panel) panel.classList.add("hide");
+  return;
+}
+
+const panel = $("adminPanel");
+if (panel) panel.classList.remove("hide");
+  const users = getUsers();
+
+  const totalUsers = $("totalUsers");
+  const usersList = $("usersList");
+
+  if (totalUsers) {
+    totalUsers.textContent = users.length;
+  }
+
+  if (!usersList) return;
+
+  if (!users.length) {
+    usersList.innerHTML = "No users found.";
+    return;
+  }
+
+  usersList.innerHTML = users.map(user => `
+    <div class="savings-goal">
+      <div class="category-name">
+        <strong>${escapeHTML(user.name)}</strong>
+        <span>${escapeHTML(user.email)}</span>
+      </div>
+    </div>
+  `).join("");
+}
+
 /* ================= RENDER ================= */
 
 function render() {
@@ -388,23 +404,24 @@ if (budget > 0) {
 
   if (percentage >= 100) {
     budgetAlert.textContent =
-      "⚠️ Budget limit reached or exceeded.";
+      "\u26A0\uFE0F Budget limit reached or exceeded.";
   } else if (percentage >= 80) {
     budgetAlert.textContent =
-      "⚠️ You have used more than 80% of your budget.";
+      "\u26A0\uFE0F You have used more than 80% of your budget.";
   } else {
     budgetAlert.textContent =
-      "✅ Your budget is under control.";
+      "\u2705 Your budget is under control.";
   }
 } else {
   progressText.textContent = "0% used";
-  remainingText.textContent = "₹0 remaining";
+    remainingText.textContent = "\u20B90 remaining";
   progressFill.style.width = "0%";
   budgetAlert.classList.add("hide");
 }
   renderExpenses(data.expenses);
 renderCategoryBreakdown(data.expenses);
 renderSavingsGoals(data.savingsGoals || []);
+renderAdminDashboard();
 renderSpendingChart(data.expenses);
   renderInsights(
     budget,
@@ -452,7 +469,7 @@ function renderExpenses(expenses) {
 
           <small>
             ${escapeHTML(expense.category)}
-            •
+            \u2022
             ${escapeHTML(expense.date)}
           </small>
         </div>
@@ -537,7 +554,7 @@ function renderSpendingChart(expenses) {
     );
 
     ctx.fillText(
-      "₹" + values[index].toLocaleString("en-IN"),
+      "\u20B9" + values[index].toLocaleString("en-IN"),
       x + barWidth / 2,
       y - 8
     );
@@ -599,13 +616,13 @@ function renderInsights(
   if (budget === 0) {
 
     insights.push(
-      "💡 Set your monthly budget to start tracking."
+      "\u{1F4A1} Set your monthly budget to start tracking."
     );
 
   } else if (spending === 0) {
 
     insights.push(
-      "💡 No expenses added yet. Your budget is currently unused."
+      "\u{1F4A1} No expenses added yet. Your budget is currently unused."
     );
 
   } else {
@@ -616,24 +633,24 @@ function renderInsights(
     if (percentage >= 100) {
 
       insights.push(
-        "⚠️ You have reached or exceeded your monthly budget."
+        "\u26A0\uFE0F You have reached or exceeded your monthly budget."
       );
 
     } else if (percentage >= 80) {
 
       insights.push(
-        "⚠️ You have used more than 80% of your monthly budget."
+        "\u26A0\uFE0F You have used more than 80% of your monthly budget."
       );
 
     } else {
 
       insights.push(
-        "✅ Your spending is currently below 80% of your budget."
+        "\u2705 Your spending is currently below 80% of your budget."
       );
     }
 
     insights.push(
-      `💰 Remaining budget: ${money(
+      `\u{1F4B0} Remaining budget: ${money(
         Math.max(remaining, 0)
       )}`
     );
@@ -647,7 +664,7 @@ function renderInsights(
     if (highest) {
 
       insights.push(
-        `📊 Highest spending category: ${
+        `\u{1F4CA} Highest spending category: ${
           highest.category
         } (${money(highest.amount)})`
       );
@@ -755,6 +772,7 @@ window.googleDemo = googleDemo;
 window.logout = logout;
 window.deleteExpense = deleteExpense;
 window.deleteSavingsGoal = deleteSavingsGoal;
+
 /* ================= SEARCH & FILTER ================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -802,3 +820,109 @@ function showForgotPassword() {
 
   alert("Password reset successfully! Please login with your new password.");
 }
+
+function scrollToSection(id) {
+  const accountPage = $("accountPage");
+
+  if (accountPage) {
+    accountPage.classList.add("hide");
+  }
+
+  document.querySelectorAll(".dashboard-content > section").forEach(section => {
+    section.classList.remove("hide");
+  });
+
+  const section = document.getElementById(id);
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+}
+
+window.scrollToSection = scrollToSection;
+
+window.scrollToSection = scrollToSection;
+
+function toggleAccountMenu() {
+  const menu = $("accountMenu");
+
+  if (!menu) return;
+
+  menu.classList.toggle("hide");
+
+  const users = getUsers();
+  const user = users.find(item => item.email === currentUser);
+
+  if (user) {
+    $("accountName").textContent = user.name;
+    $("accountEmail").textContent = user.email;
+  }
+}
+
+window.toggleAccountMenu = toggleAccountMenu;
+
+function showAccountPage() {
+  const accountPage = document.getElementById("accountPage");
+  const dashboard = document.querySelector(".dashboard");
+  const dashboardContent = document.querySelector(".dashboard-content");
+
+  if (!accountPage || !dashboard) return;
+
+  // Account page ko dashboard ke andar rakho
+  if (accountPage.parentElement !== dashboard) {
+    dashboard.appendChild(accountPage);
+  }
+
+  // Dashboard content hide
+  if (dashboardContent) {
+    dashboardContent.classList.add("hide");
+  }
+
+  // Account page show
+  accountPage.classList.remove("hide");
+
+  // User information
+  const users = getUsers();
+  const user = users.find(item => item.email === currentUser);
+
+  if (user) {
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileEmail").textContent = user.email;
+    document.getElementById("accountFullName").textContent = user.name;
+    document.getElementById("accountFullEmail").textContent = user.email;
+
+    const avatar = document.querySelector(".account-avatar");
+    if (avatar) {
+      avatar.textContent = user.name.charAt(0).toUpperCase();
+    }
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+window.showAccountPage = showAccountPage;
+
+
+window.showAccountPage = showAccountPage;
+function showDashboard() {
+  const accountPage = document.getElementById("accountPage");
+  const dashboard = document.querySelector(".dashboard");
+
+  if (accountPage) {
+    accountPage.classList.add("hide");
+  }
+
+  if (dashboard) {
+    dashboard.classList.remove("hide");
+  }
+}
+
+window.showDashboard = showDashboard;
+
+window.toggleAccountMenu = toggleAccountMenu;
