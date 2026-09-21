@@ -1,4 +1,4 @@
-const $ = (id) => document.getElementById(id);
+﻿const $ = (id) => document.getElementById(id);
 
 let currentUser = localStorage.getItem("nestledger_current_user");
 
@@ -86,7 +86,9 @@ function signup(event) {
 
   toast("Account created successfully");
 
-  showLogin();
+  currentUser = email;
+  localStorage.setItem("nestledger_current_user", currentUser);
+  enter();
 }
 /* ================= LOGIN ================= */
 
